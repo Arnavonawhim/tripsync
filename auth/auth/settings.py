@@ -19,11 +19,8 @@ INSTALLED_APPS = ['django.contrib.admin',
                 'django.contrib.staticfiles', 
                 'account.apps.AccountConfig',
                 'community',
-<<<<<<< HEAD
                 'HomePage',
-=======
                 'chatbot',
->>>>>>> upstream/development
                 'rest_framework', 
                 'rest_framework_simplejwt', 
                 'rest_framework_simplejwt.token_blacklist', 
@@ -161,8 +158,5 @@ else:
     MEDIA_URL = '/media/'
     DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
-<<<<<<< HEAD
 WEATHER_API_KEY = config('WEATHER_API_KEY')
-=======
 GOOGLE_API_KEY=config('GOOGLE_API_KEY')
->>>>>>> upstream/development
