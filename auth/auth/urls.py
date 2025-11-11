@@ -12,9 +12,7 @@ from django.conf.urls.static import static
 @api_view(['GET'])
 def root_redirect(request):
     return Response({
-        'message': 'Welcome to TripSync API',
-        'swagger link': request.build_absolute_uri('/api/docs/'),
-        'admin link': request.build_absolute_uri('/admin/'),})
+        'message': 'Welcome to TripSync API',})
 def health_check(request):
     return JsonResponse({'status': 'ok'})
 

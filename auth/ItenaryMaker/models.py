@@ -15,3 +15,4 @@ class ItenaryFields(models.Model):
     trip_preferences = models.CharField()
     Budget = models.FloatField()    
 
+    
