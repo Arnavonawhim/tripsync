@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
-class TripmateConfig(AppConfig):
+class ItineraryConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'tripmate'
+    name = 'Itinerary'

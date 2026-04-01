@@ -1,12 +1,6 @@
 from django.db import models
 from django.conf import settings
-<<<<<<< HEAD:auth/community/models.py
-from django.core.validators import MinValueValidator, MaxValueValidator
-import logging
-logger = logging.getLogger(__name__)
-=======
 from django.core.validators import MinValueValidator, MaxValueValidator, FileExtensionValidator
->>>>>>> upstream/main:main/community/models.py
 
 class Post(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name='posts')
@@ -19,17 +13,10 @@ class Post(models.Model):
                            validators=[FileExtensionValidator(allowed_extensions=['mp4', 'mov', 'avi', 'mkv', 'webm'])])
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-<<<<<<< HEAD:auth/community/models.py
-    
-    class Meta:
-        ordering = ['-created']
-    
-=======
 
     class Meta:
         ordering = ['-created']
 
->>>>>>> upstream/main:main/community/models.py
     def __str__(self):
         return self.title
 
@@ -44,11 +31,7 @@ class Comment(models.Model):
         ordering = ['-created']
 
     def __str__(self):
-<<<<<<< HEAD:auth/community/models.py
-        return str(self.user.id) + " commented on '" + self.post.title + "'"
-=======
         return f"{self.user.id} commented on '{self.post.title}'"
->>>>>>> upstream/main:main/community/models.py
 
 class PostLike(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes')
@@ -62,12 +45,5 @@ class PostLike(models.Model):
         ordering = ['-created']
 
     def __str__(self):
-<<<<<<< HEAD:auth/community/models.py
-        if self.like:
-            return str(self.user.id) + " liked the post '" + self.post.title + "'"
-        else:
-            return str(self.user.id) + " disliked the post '" + self.post.title + "'"
-=======
         action = 'liked' if self.like else 'disliked'
         return f"{self.user.id} {action} '{self.post.title}'"
->>>>>>> upstream/main:main/community/models.py

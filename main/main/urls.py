@@ -18,27 +18,19 @@ def health_check(request):
 urlpatterns = [
     path('', root_redirect),
      path('health/', health_check, name='health-check'),
-<<<<<<< HEAD:auth/auth/urls.py
     path('admin/', admin.site.urls),
     path('api/chatbot/', include('chatbot.urls')),
-    path('api/tripmate/', include('tripmate.urls')),
-=======
     path('main/', admin.site.urls),
->>>>>>> upstream/main:main/main/urls.py
     path('api/account/', include('account.urls')),
     path('api/personal/', include('personal.urls')),
     path('api/community/',include('community.urls')),
     path('api/trending/',include('trending.urls')),
     path('api/chat/', include('chat.urls')),
     path('api/expense/',include('expense.urls')),
-<<<<<<< HEAD:auth/auth/urls.py
-    path('api/itinerary/',include('ItenaryMaker.urls')),
-    path('api/trending/',include('trending.urls')),
-=======
     path('api/itinerary/',include('Itinerary.urls')),
+    path('api/trending/',include('trending.urls')),
     path('api/tripmate/',include('tripmate.urls')),
     path('api/chatbot/', include('chatbot.urls')),
->>>>>>> upstream/main:main/main/urls.py
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),

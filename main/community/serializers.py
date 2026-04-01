@@ -48,26 +48,6 @@ class PostSerializer(serializers.ModelSerializer):
 
     def get_img_url(self, obj):
         if obj.img:
-<<<<<<< HEAD:auth/community/serializers.py
-            if hasattr(settings, 'USE_S3') and settings.USE_S3:
-                return obj.img.url  
-            else:
-                req = self.context.get('request')
-                if req:
-                    return req.build_absolute_uri(obj.img.url)
-                return obj.img.url
-            return None
-
-    def get_vid_url(self, obj):
-        if obj.vid:
-            if hasattr(settings, 'USE_S3') and settings.USE_S3:
-                return obj.vid.url  
-            else:
-                req = self.context.get('request')
-                if req:
-                    return req.build_absolute_uri(obj.vid.url)
-                return obj.vid.url
-=======
             req = self.context.get('request')
             return req.build_absolute_uri(obj.img.url) if req else obj.img.url
         return None
@@ -76,7 +56,6 @@ class PostSerializer(serializers.ModelSerializer):
         if obj.vid:
             req = self.context.get('request')
             return req.build_absolute_uri(obj.vid.url) if req else obj.vid.url
->>>>>>> upstream/main:main/community/serializers.py
         return None
 
     def get_likes(self, obj):

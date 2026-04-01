@@ -11,8 +11,8 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS',cast=lambda v: [s.strip() for s in v.split(',')])
 
 INSTALLED_APPS = [
-    'daphne',
-    'channels',
+    #'daphne',
+    #'channels',
     'storages',
     'django.contrib.admin',
     'django.contrib.auth',
