@@ -8,9 +8,9 @@ pip install -r requirements.txt
 pip install gunicorn
 
 echo "Collecting static files..."
-python manage.py collectstatic --no-input
+python main/manage.py collectstatic --no-input
 
 echo "Running migrations..."
-python manage.py migrate
+python main/manage.py migrate
 
 echo "Build completed successfully!"
