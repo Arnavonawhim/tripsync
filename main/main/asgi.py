@@ -1,7 +1,13 @@
 import os
 import django
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'main.main.settings')
+<<<<<<< HEAD:auth/auth/asgi.py
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'auth.settings')
+
+django.setup()
+
+=======
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'main.settings')
 django.setup()
 
 from django.core.asgi import get_asgi_application
@@ -15,3 +21,4 @@ application = ProtocolTypeRouter({
             URLRouter(websocket_urlpatterns)
     ),
 })
+>>>>>>> upstream/main:main/main/asgi.py
