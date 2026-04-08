@@ -2,20 +2,50 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.http import JsonResponse
-from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+from drf_spectacular.utils import extend_schema, OpenApiResponse, OpenApiExample
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
+from drf_spectacular.types import OpenApiTypes
 
-
-@api_view(['GET'])
-def root_redirect(request):
+@extend_schema(
+    responses={
+        200: OpenApiResponse(
+            response=OpenApiTypes.OBJECT,
+            description="API is live",
+            examples=[
+                OpenApiExample(
+                    "Success",
+                    value={
+                        "status": "ok",
+                        "message": "Welcome to TripSync API",
+                        "version": "1.0.0",
+                        "docs": "/api/docs/",
+                    },
+                )
+            ],
+        )
+    },
+    tags=["Health"],
+    summary="API root",
+    description="Confirms the API is live and returns the current version.",
+)
+@api_view(["GET"])
+def root_view(request):
     return Response({
-        'message': 'Welcome to TripSync API',})
+        "status": "ok",
+        "message": "Welcome to TripSync API",
+        "version": "1.0.0",
+        "docs": "/api/docs/" if settings.DEBUG else "Docs not available in production",
+    })
+
+@extend_schema(exclude=True)
 def health_check(request):
-    return JsonResponse({'status': 'ok'})
+    return JsonResponse({"status": "ok"})
 
 urlpatterns = [
+<<<<<<< HEAD
     path('', root_redirect),
      path('health/', health_check, name='health-check'),
     path('admin/', admin.site.urls),
@@ -34,8 +64,20 @@ urlpatterns = [
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+=======
+    path("", root_view, name="root"),
+    path("health/", health_check, name="health-check"),
+    path("control/", admin.site.urls),
+    path("api/account/", include("account.urls", namespace="account")),
+>>>>>>> upstream/auth
 ]
 
+if settings.DEBUG:
+    urlpatterns += [
+        path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
+        path("api/docs/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),
+        path("api/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
+    ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

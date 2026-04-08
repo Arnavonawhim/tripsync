@@ -819,4 +819,8 @@ class GoogleOAuthView(APIView):
         except DRFValidationError:
             raise
         except Exception as e:
+<<<<<<< HEAD
             return Response({'status': 'error', 'message': 'Google authentication failed', 'errors': str(e)},status=status.HTTP_400_BAD_REQUEST)
+=======
+            return Response({'status': 'error', 'message': 'Google authentication failed', 'errors': str(e)},status=status.HTTP_400_BAD_REQUEST)
+>>>>>>> upstream/auth

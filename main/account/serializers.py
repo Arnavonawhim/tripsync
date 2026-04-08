@@ -78,4 +78,8 @@ class PasswordResetVerifySerializer(serializers.Serializer):
         return data
 
 class GoogleOAuthSerializer(serializers.Serializer):
+<<<<<<< HEAD
     token = serializers.CharField(required=True)
+=======
+    token = serializers.CharField(required=True)
+>>>>>>> upstream/auth
