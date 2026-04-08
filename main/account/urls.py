@@ -6,7 +6,6 @@ app_name = 'account'
 
 urlpatterns = [
     path('register/', views.UserRegistrationView.as_view(), name='register'),
-    path('auth/google/', views.GoogleOAuthView.as_view(), name='google-oauth'),
     path('verify-otp/', views.VerifyRegistrationOTPView.as_view(), name='verify-otp'),
     path('resend-otp/', views.ResendOTPView.as_view(), name='resend-otp'),
     path('login/', views.UserLoginView.as_view(), name='login'),

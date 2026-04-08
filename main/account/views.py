@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import ValidationError as DRFValidationError
+<<<<<<< HEAD
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.token_blacklist.models import OutstandingToken, BlacklistedToken
 from drf_spectacular.utils import extend_schema, OpenApiResponse, OpenApiExample, OpenApiTypes
@@ -15,6 +16,18 @@ from account import serializers
 from account import tasks
 from .serializers import GoogleOAuthSerializer
 from google.auth.transport import requests as google_requests
+=======
+from account.serializers import (UserRegistrationSerializer,VerifyOTPSerializer,UserLoginSerializer,
+                                 PasswordResetRequestSerializer,PasswordResetVerifySerializer,)
+from account.models import User
+from django.contrib.auth import authenticate
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.exceptions import AuthenticationFailed
+from drf_spectacular.utils import extend_schema, OpenApiResponse, OpenApiExample
+from drf_spectacular.types import OpenApiTypes
+from django.utils import timezone
+from account.utils import send_otp_email
+>>>>>>> parent of 4d60554 (added googleOauth)
 
 User = get_user_model()
 logger = logging.getLogger("account")
@@ -559,6 +572,7 @@ class PasswordResetConfirmView(APIView):
             serializer.is_valid(raise_exception=True)
         except DRFValidationError:
             raise
+<<<<<<< HEAD
         email = serializer.validated_data["email"]
         reset_token = serializer.validated_data["reset_token"]
         new_password = serializer.validated_data["new_password"]
@@ -768,3 +782,8 @@ class GoogleOAuthView(APIView):
             raise
         except Exception as e:
             return Response({'status': 'error', 'message': 'Google authentication failed', 'errors': str(e)},status=status.HTTP_400_BAD_REQUEST)
+=======
+        except Exception as e:
+            return Response({'status': 'error', 'message': 'Password reset failed', 'errors': str(e)},
+                            status=status.HTTP_400_BAD_REQUEST)
+>>>>>>> parent of 4d60554 (added googleOauth)
