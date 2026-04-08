@@ -27,6 +27,9 @@ from drf_spectacular.utils import extend_schema, OpenApiResponse, OpenApiExample
 from drf_spectacular.types import OpenApiTypes
 from django.utils import timezone
 from account.utils import send_otp_email
+<<<<<<< HEAD
+>>>>>>> parent of 4d60554 (added googleOauth)
+=======
 >>>>>>> parent of 4d60554 (added googleOauth)
 
 User = get_user_model()
@@ -573,6 +576,7 @@ class PasswordResetConfirmView(APIView):
         except DRFValidationError:
             raise
 <<<<<<< HEAD
+<<<<<<< HEAD
         email = serializer.validated_data["email"]
         reset_token = serializer.validated_data["reset_token"]
         new_password = serializer.validated_data["new_password"]
@@ -782,6 +786,11 @@ class GoogleOAuthView(APIView):
             raise
         except Exception as e:
             return Response({'status': 'error', 'message': 'Google authentication failed', 'errors': str(e)},status=status.HTTP_400_BAD_REQUEST)
+=======
+        except Exception as e:
+            return Response({'status': 'error', 'message': 'Password reset failed', 'errors': str(e)},
+                            status=status.HTTP_400_BAD_REQUEST)
+>>>>>>> parent of 4d60554 (added googleOauth)
 =======
         except Exception as e:
             return Response({'status': 'error', 'message': 'Password reset failed', 'errors': str(e)},
