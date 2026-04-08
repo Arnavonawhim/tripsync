@@ -186,9 +186,12 @@ REST_FRAMEWORK = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
     ),
+=======
+>>>>>>> parent of 4d60554 (added googleOauth)
 =======
 >>>>>>> parent of 4d60554 (added googleOauth)
 =======

@@ -77,6 +77,7 @@ class PasswordResetVerifySerializer(serializers.Serializer):
             raise serializers.ValidationError({"confirm_password": "Passwords do not match."})
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         return data
 
 class GoogleOAuthSerializer(serializers.Serializer):
@@ -85,6 +86,9 @@ class GoogleOAuthSerializer(serializers.Serializer):
 =======
     token = serializers.CharField(required=True)
 >>>>>>> upstream/auth
+=======
+        return data
+>>>>>>> parent of 4d60554 (added googleOauth)
 =======
         return data
 >>>>>>> parent of 4d60554 (added googleOauth)

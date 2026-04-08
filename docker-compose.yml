@@ -1,10 +1,47 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 version: '3.9'
 =======
 version: '3.9'
+=======
+version: '3.9'
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: tripsync_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  db:
+    image: postgres:15-alpine
+    container_name: tripsync_db
+    environment:
+      POSTGRES_DB: tripsync_db
+      POSTGRES_USER: tripsync_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-changeme123}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tripsync_user -d tripsync_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+=======
+version: "3.9"
+>>>>>>> parent of 4d60554 (added googleOauth)
 
 services:
   redis:
@@ -108,6 +145,7 @@ services:
       - "6379:6379"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     volumes:
       - redis_data:/data
     healthcheck:
@@ -142,6 +180,9 @@ services:
 =======
 >>>>>>> upstream/main
 >>>>>>> parent of 4d60554 (added googleOauth)
+=======
+>>>>>>> upstream/main
+>>>>>>> parent of 4d60554 (added googleOauth)
 
   web:
     build:
@@ -151,7 +192,10 @@ services:
     container_name: tripsync_web
     working_dir: /app/auth
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of 4d60554 (added googleOauth)
     command: >
       sh -c "python manage.py migrate &&
              gunicorn auth.wsgi:application --bind 0.0.0.0:8000 --workers 3 &
@@ -239,6 +283,7 @@ volumes:
 volumes:
   postgres_data:
 <<<<<<< HEAD
+<<<<<<< HEAD
   redis_data:
 =======
       dockerfile: Dockerfile
@@ -308,6 +353,9 @@ volumes:
   static_files:
   media_files:
 >>>>>>> upstream/auth
+=======
+>>>>>>> upstream/main
+>>>>>>> parent of 4d60554 (added googleOauth)
 =======
 >>>>>>> upstream/main
 >>>>>>> parent of 4d60554 (added googleOauth)
