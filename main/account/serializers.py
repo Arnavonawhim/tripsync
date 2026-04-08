@@ -76,3 +76,6 @@ class PasswordResetVerifySerializer(serializers.Serializer):
         if data['new_password'] != data['confirm_password']:
             raise serializers.ValidationError({"confirm_password": "Passwords do not match."})
         return data
+
+class GoogleOAuthSerializer(serializers.Serializer):
+    token = serializers.CharField(required=True)

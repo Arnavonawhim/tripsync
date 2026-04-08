@@ -4,15 +4,18 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import ValidationError as DRFValidationError
 from account.serializers import (UserRegistrationSerializer,VerifyOTPSerializer,UserLoginSerializer,
-                                 PasswordResetRequestSerializer,PasswordResetVerifySerializer,)
+                                 PasswordResetRequestSerializer,PasswordResetVerifySerializer,GoogleOAuthSerializer,)
 from account.models import User
 from django.contrib.auth import authenticate
+from django.conf import settings
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
 from drf_spectacular.utils import extend_schema, OpenApiResponse, OpenApiExample
 from drf_spectacular.types import OpenApiTypes
 from django.utils import timezone
 from account.utils import send_otp_email
+from google.oauth2 import token
+from google.auth.transport import requests as google_requests
 
 def get_tokens_for_user(user):
     if not user.is_active:
@@ -726,3 +729,94 @@ class PasswordResetVerifyView(APIView):
         except Exception as e:
             return Response({'status': 'error', 'message': 'Password reset failed', 'errors': str(e)},
                             status=status.HTTP_400_BAD_REQUEST)
+
+class GoogleOAuthView(APIView):
+    @extend_schema(
+        request=GoogleOAuthSerializer,
+        responses={
+            200: OpenApiResponse(
+                response=OpenApiTypes.OBJECT,
+                description="Google OAuth login successful",
+                examples=[
+                    OpenApiExample(
+                        name="Success Response",
+                        value={
+                            "status": "success",
+                            "message": "Login successful",
+                            "data": {
+                                "user": {
+                                    "id": 1,
+                                    "email": "user@gmail.com",
+                                    "is_email_verified": True
+                                },
+                                "tokens": {
+                                    "refresh": "eyJ0eXAiOiJKV1QiLCJhbGc...",
+                                    "access": "eyJ0eXAiOiJKV1QiLCJhbGc..."
+                                }
+                            }
+                        }
+                    )
+                ]
+            ),
+            400: OpenApiResponse(
+                response=OpenApiTypes.OBJECT,
+                description="Invalid or expired Google token",
+                examples=[
+                    OpenApiExample(
+                        name="Invalid Token",
+                        value={
+                            "status": "error",
+                            "message": "Invalid Google token",
+                            "errors": {"token": ["Token verification failed"]}
+                        }
+                    )
+                ]
+            ),
+            403: OpenApiResponse(
+                response=OpenApiTypes.OBJECT,
+                description="Account deactivated",
+                examples=[
+                    OpenApiExample(
+                        name="Account Deactivated",
+                        value={
+                            "status": "error",
+                            "message": "Account is deactivated.",
+                            "errors": {"account": ["Your account has been deactivated"]}
+                        }
+                    )
+                ]
+            ),
+        },
+        tags=["Authentication"],
+        summary="Google OAuth login/signup",
+        description="Authenticate or register using a Google OAuth token. Email is automatically verified."
+    )
+    def post(self, request, format=None):
+        try:
+            serializer = GoogleOAuthSerializer(data=request.data)
+            if serializer.is_valid(raise_exception=True):
+                token = serializer.validated_data.get('token')
+                try:
+                    idinfo = token.verify_oauth2_token(token, google_requests.Request(),settings.GOOGLE_OAUTH_CLIENT_ID)
+                except ValueError:
+                    return Response({'status': 'error','message': 'Invalid Google token','errors': {'token': ['Token verification failed']}},status=status.HTTP_400_BAD_REQUEST)
+                email = idinfo.get('email', '').lower()
+                if not email:
+                    return Response({'status': 'error','message': 'Google account has no email','errors': {'token': ['No email associated with this Google account']}},status=status.HTTP_400_BAD_REQUEST)
+                user = User.objects.filter(email=email).first()
+                if user:
+                    if not user.is_active:
+                        return Response({'status': 'error','message': 'Account is deactivated.','errors': {'account': ['Your account has been deactivated']}},status=status.HTTP_403_FORBIDDEN)
+                    if not user.is_email_verified:
+                        user.is_email_verified = True
+                        user.save()
+                else:
+                    user = User.objects.create_user(email=email)
+                    user.is_email_verified = True
+                    user.save()
+                tokens = get_tokens_for_user(user)
+                return Response({'status': 'success','message': 'Login successful','data': {'user': {'id': user.id,'email': user.email,'is_email_verified': user.is_email_verified},'tokens': tokens}},status=status.HTTP_200_OK)
+        except DRFValidationError:
+            raise
+        except Exception as e:
+            return Response({'status': 'error', 'message': 'Google authentication failed', 'errors': str(e)},status=status.HTTP_400_BAD_REQUEST)

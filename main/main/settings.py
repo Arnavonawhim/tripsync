@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
+    'oauth2_provider',
     'drf_spectacular',
     'django_extensions',
     'account',
@@ -121,6 +122,9 @@ SPECTACULAR_SETTINGS = {
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
@@ -246,6 +250,7 @@ LOGGING = {
 
 TWOFACTOR_API_KEY = config('TWOFACTOR_API_KEY', '')
 GOOGLE_API_KEY=config('GOOGLE_API_KEY')
+GOOGLE_OAUTH_CLIENT_ID=config('GOOGLE_OAUTH_CLIENT_ID', default='')
 
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
